@@ -1,0 +1,70 @@
+springdoc:
+  swagger-ui:
+    version: 3
+    disable-swagger-default-url: true
+
+spring:
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  flyway:
+#    enabled:false
+    locations: classpath:migrations
+    baseline-on-migrate: true
+  batch:
+    job:
+      enabled: false
+  jms:
+    cache:
+      enabled: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+            client-secret:
+
+          cite:
+            client-id:
+            client-secret:
+            scope:
+              - openid
+              - email
+              - profile
+
+        provider:
+          cite:
+            issuer-uri:
+
+  redis:
+    host:
+    port:
+    password:
+
+server:
+  port: 8080
+  servlet:
+    contextPath: /intelcomp
+
+logging:
+  level:
+    org.springframework.security.: DEBUG
+    org.springframework.security.web.util.: INFO
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.reflections.Reflections: WARN
+
+intelcomp:
+  frontBaseUrl: http://localhost:4200
+  loginRedirect: ${intelcomp.frontBaseUrl}
+  logoutRedirect: ${intelcomp.frontBaseUrl}
+  admins:
+    - test@test.com
+
+job-service:
+  authorization:
+    url:
+    grant-type:
+    client-id:
+    client-secret:
