@@ -1,15 +1,15 @@
 package eu.intelcomp.catalogue.controller;
 
 import eu.intelcomp.catalogue.domain.Job;
+import eu.intelcomp.catalogue.domain.JobFilters;
+import eu.intelcomp.catalogue.domain.JobInfo;
+import eu.intelcomp.catalogue.domain.User;
 import eu.intelcomp.catalogue.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
@@ -26,12 +26,33 @@ public class JobController {
     }
 
     @PostMapping("execute")
-    public ResponseEntity<Job> add(@RequestBody Job job, @ApiIgnore Authentication authentication) {
+    public ResponseEntity<JobInfo> add(@RequestBody Job job, @ApiIgnore Authentication authentication) {
         return new ResponseEntity<>(jobService.add(job, authentication), HttpStatus.OK);
     }
 
+    @GetMapping("/{jobId}")
+    public ResponseEntity<JobInfo> get(@PathVariable("jobId") String id,
+                                       @RequestParam(value = "user", required = false) String userId,
+                                       @ApiIgnore Authentication authentication) {
+        if (userId == null || "".equals(userId)) {
+            userId = User.of(authentication).getSub();
+        }
+        return new ResponseEntity<>(jobService.get(id, userId), HttpStatus.OK);
+    }
+
     @PostMapping
-    public ResponseEntity<List<?>> browse(@ApiIgnore Authentication authentication) {
-        return new ResponseEntity<>(jobService.browse(null, authentication), HttpStatus.OK);
+    public ResponseEntity<List<JobInfo>> browse(@RequestBody JobFilters jobFilters, @ApiIgnore Authentication authentication) {
+        return new ResponseEntity<>(jobService.browse(jobFilters, authentication), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{jobId}")
+    public ResponseEntity<Void> delete(@PathVariable("jobId") String id,
+                                       @RequestParam(value = "user", required = false) String userId,
+                                       @ApiIgnore Authentication authentication) {
+        if (userId == null || "".equals(userId)) {
+            userId = User.of(authentication).getSub();
+        }
+        jobService.delete(id, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

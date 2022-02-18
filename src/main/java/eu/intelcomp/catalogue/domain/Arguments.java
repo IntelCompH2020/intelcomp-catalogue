@@ -1,16 +1,16 @@
 package eu.intelcomp.catalogue.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Arguments {
 
     private ServiceArguments serviceArguments;
-    private String callerAttributes = null;
+    private List<String> callerAttributes = null;
     private List<JobArgument> jobArguments = new ArrayList<>();
 
-    public Arguments() {}
+    public Arguments() {
+    }
 
     public ServiceArguments getServiceArguments() {
         return serviceArguments;
@@ -24,11 +24,11 @@ public class Arguments {
         this.serviceArguments = serviceArguments;
     }
 
-    public String getCallerAttributes() {
+    public List<String> getCallerAttributes() {
         return callerAttributes;
     }
 
-    public void setCallerAttributes(String callerAttributes) {
+    public void setCallerAttributes(List<String> callerAttributes) {
         this.callerAttributes = callerAttributes;
     }
 
@@ -55,12 +55,20 @@ public class Arguments {
     public class ServiceArguments {
         private String processId;
         private String user;
+        private String infraId = "k8s";
 
-        public ServiceArguments() {}
+        public ServiceArguments() {
+        }
 
         public ServiceArguments(String processId, String user) {
             this.processId = processId;
             this.user = user;
+        }
+
+        public ServiceArguments(String processId, String user, String infraId) {
+            this.processId = processId;
+            this.user = user;
+            this.infraId = infraId;
         }
 
         public String getProcessId() {
@@ -78,6 +86,14 @@ public class Arguments {
         public void setUser(String user) {
             this.user = user;
         }
+
+        public String getInfraId() {
+            return infraId;
+        }
+
+        public void setInfraId(String infraId) {
+            this.infraId = infraId;
+        }
     }
 
     public class JobArgument {
@@ -85,7 +101,8 @@ public class Arguments {
         private String value;
 //        private List<String> value = new ArrayList<>();
 
-        public JobArgument() {}
+        public JobArgument() {
+        }
 
         public JobArgument(String name, String value) {
             this.name = name;
