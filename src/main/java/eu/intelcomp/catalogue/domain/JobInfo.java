@@ -1,7 +1,6 @@
 package eu.intelcomp.catalogue.domain;
 
 import java.util.Date;
-import java.util.List;
 
 public class JobInfo {
 
@@ -13,7 +12,7 @@ public class JobInfo {
     private Date finishedAt;
     private String status;
     private String user;
-    private List<String> callerAttributes;
+    private String callerAttributes;
 
     public JobInfo() {}
 
@@ -81,11 +80,11 @@ public class JobInfo {
         this.user = user;
     }
 
-    public List<String> getCallerAttributes() {
+    public String getCallerAttributes() {
         return callerAttributes;
     }
 
-    public void setCallerAttributes(List<String> callerAttributes) {
+    public void setCallerAttributes(String callerAttributes) {
         this.callerAttributes = callerAttributes;
     }
 }
