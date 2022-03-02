@@ -1,9 +1,6 @@
 package eu.intelcomp.catalogue.controller;
 
-import eu.intelcomp.catalogue.domain.Job;
-import eu.intelcomp.catalogue.domain.JobFilters;
-import eu.intelcomp.catalogue.domain.JobInfo;
-import eu.intelcomp.catalogue.domain.User;
+import eu.intelcomp.catalogue.domain.*;
 import eu.intelcomp.catalogue.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

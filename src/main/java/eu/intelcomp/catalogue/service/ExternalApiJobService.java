@@ -12,7 +12,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -35,17 +34,14 @@ public class ExternalApiJobService implements JobService {
 
     @Override
     public JobInfo add(Job job, Authentication authentication) {
-        Arguments arguments = new Arguments();
-        arguments.addServiceArguments(job.getProject(), User.of(authentication).getSub());
-        arguments.addJobArgument("dateFrom", "2019-06-10");
-        arguments.addJobArgument("dateTo", "2020-06-10");
-        List<String> acronyms = new ArrayList<>();
-        acronyms.add("acronym1");
-        acronyms.add("acronym2");
-//        arguments.addJobArgument("projectAcronym", acronyms);
-        arguments.addJobArgument("projectAcronym", "acronym1");
-        arguments.addJobArgument("queryMode", "0");
-        HttpEntity<?> request = new HttpEntity<>(arguments, createHeaders());
+        job.getServiceArguments().setUser(User.of(authentication).getSub());
+//        List<String> acronyms = new ArrayList<>();
+//        acronyms.add("acronym1");
+//        acronyms.add("acronym2");
+//        job.addJobArgument("projectAcronym", acronyms);
+        job.addJobArgument("projectAcronym", "acronym1");
+        job.addJobArgument("queryMode", "1");
+        HttpEntity<?> request = new HttpEntity<>(job, createHeaders());
         return restTemplate.postForObject(String.join("/", properties.getApiUrl(), EXECUTE_JOB), request, JobInfo.class);
     }
 
