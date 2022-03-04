@@ -5,6 +5,7 @@ import eu.intelcomp.catalogue.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -23,6 +24,7 @@ public class JobController {
     }
 
     @PostMapping("execute")
+    @PreAuthorize("hasAuthority('OPERATOR_DATA-PROCESSOR')")
     public ResponseEntity<JobInfo> add(@RequestBody Job job, @ApiIgnore Authentication authentication) {
         return new ResponseEntity<>(jobService.add(job, authentication), HttpStatus.OK);
     }

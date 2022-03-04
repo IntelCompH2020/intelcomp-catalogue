@@ -6,7 +6,7 @@ import java.util.List;
 public class Job {
 
     private ServiceArguments serviceArguments;
-    private List<String> callerAttributes = new ArrayList<>();
+    private String callerAttributes;
     private List<JobArgument> jobArguments = new ArrayList<>();
 
     public Job() {
@@ -24,11 +24,11 @@ public class Job {
         this.serviceArguments = serviceArguments;
     }
 
-    public List<String> getCallerAttributes() {
+    public String getCallerAttributes() {
         return callerAttributes;
     }
 
-    public void setCallerAttributes(List<String> callerAttributes) {
+    public void setCallerAttributes(String callerAttributes) {
         this.callerAttributes = callerAttributes;
     }
 
@@ -96,7 +96,7 @@ public class Job {
         }
     }
 
-    public class JobArgument {
+    public static class JobArgument {
         private String name;
         private String value;
 //        private List<String> value = new ArrayList<>();

@@ -1,6 +1,7 @@
 package eu.intelcomp.catalogue.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class JobInfo {
 
@@ -10,9 +11,11 @@ public class JobInfo {
     private Date createdAt;
     private Date launchedAt;
     private Date finishedAt;
-    private String status;
     private String user;
+    private String infraId;
     private String callerAttributes;
+    private String mergedStatus;
+    private List<Status> status;
 
     public JobInfo() {}
 
@@ -64,14 +67,6 @@ public class JobInfo {
         this.finishedAt = finishedAt;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getUser() {
         return user;
     }
@@ -80,11 +75,35 @@ public class JobInfo {
         this.user = user;
     }
 
+    public String getInfraId() {
+        return infraId;
+    }
+
+    public void setInfraId(String infraId) {
+        this.infraId = infraId;
+    }
+
     public String getCallerAttributes() {
         return callerAttributes;
     }
 
     public void setCallerAttributes(String callerAttributes) {
         this.callerAttributes = callerAttributes;
+    }
+
+    public String getMergedStatus() {
+        return mergedStatus;
+    }
+
+    public void setMergedStatus(String mergedStatus) {
+        this.mergedStatus = mergedStatus;
+    }
+
+    public List<Status> getStatus() {
+        return status;
+    }
+
+    public void setStatus(List<Status> status) {
+        this.status = status;
     }
 }

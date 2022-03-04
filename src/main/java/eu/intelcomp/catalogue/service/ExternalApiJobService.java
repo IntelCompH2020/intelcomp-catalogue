@@ -1,6 +1,8 @@
 package eu.intelcomp.catalogue.service;
 
 import eu.intelcomp.catalogue.domain.*;
+import gr.athenarc.catalogue.exception.ResourceException;
+import gr.athenarc.catalogue.exception.ResourceNotFoundException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -10,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -34,15 +37,15 @@ public class ExternalApiJobService implements JobService {
 
     @Override
     public JobInfo add(Job job, Authentication authentication) {
+        if (job == null || job.getServiceArguments() == null || job.getJobArguments() == null) {
+            throw new ResourceException("Incomplete Job information", HttpStatus.BAD_REQUEST);
+        }
+        job.getServiceArguments().setInfraId("k8s");
         job.getServiceArguments().setUser(User.of(authentication).getSub());
-//        List<String> acronyms = new ArrayList<>();
-//        acronyms.add("acronym1");
-//        acronyms.add("acronym2");
-//        job.addJobArgument("projectAcronym", acronyms);
-        job.addJobArgument("projectAcronym", "acronym1");
-        job.addJobArgument("queryMode", "1");
         HttpEntity<?> request = new HttpEntity<>(job, createHeaders());
-        return restTemplate.postForObject(String.join("/", properties.getApiUrl(), EXECUTE_JOB), request, JobInfo.class);
+        String url = String.join("/", properties.getApiUrl(), EXECUTE_JOB);
+        ResponseEntity<JobInfo> response = restTemplate.exchange(url, HttpMethod.POST, request, JobInfo.class);
+        return response.getBody();
     }
 
     @Override
