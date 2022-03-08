@@ -9,10 +9,7 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("datasets")
@@ -42,4 +39,9 @@ public class DatasetController {
         return dataset;
     }
 
+    // TODO: helper method, remove when job filter is implemented correctly from @CITE
+    @GetMapping("instances/{id}/internalid")
+    public String getCoreId(@PathVariable("id") String id) {
+        return genericItemService.searchResource("dataset_instance", id, true).getId();
+    }
 }
