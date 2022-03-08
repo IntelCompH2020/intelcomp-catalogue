@@ -40,6 +40,9 @@ public class ExternalApiJobService implements JobService {
         if (job == null || job.getServiceArguments() == null || job.getJobArguments() == null) {
             throw new ResourceException("Incomplete Job information", HttpStatus.BAD_REQUEST);
         }
+        if (job.getServiceArguments().getProcessId() == null || "".equals(job.getServiceArguments().getProcessId())) {
+            throw new ResourceException("'processId' cannot be empty", HttpStatus.BAD_REQUEST);
+        }
         job.getServiceArguments().setInfraId("k8s");
         job.getServiceArguments().setUser(User.of(authentication).getSub());
         HttpEntity<?> request = new HttpEntity<>(job, createHeaders());
