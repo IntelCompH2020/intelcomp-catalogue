@@ -1,6 +1,5 @@
 package eu.intelcomp.catalogue.domain;
 
-import gr.athenarc.catalogue.domain.Metadata;
 import org.json.simple.JSONObject;
 
 public class ChapterAnswer {
@@ -16,7 +15,7 @@ public class ChapterAnswer {
         this.answer = answer;
     }
 
-    public ChapterAnswer(String chapterAnswerId, String chapterId, Metadata metadata) {
+    public ChapterAnswer(String chapterAnswerId, String chapterId) {
         this.answer = new JSONObject();
         this.setId(chapterAnswerId);
         this.chapterId = chapterId;
