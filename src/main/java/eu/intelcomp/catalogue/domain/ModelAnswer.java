@@ -8,6 +8,7 @@ import java.util.TreeMap;
 public class ModelAnswer {
 
     private String id;
+    private String modelId;
     private Map<String, ChapterAnswer> chapterAnswers;
 
     public ModelAnswer() {
@@ -27,6 +28,14 @@ public class ModelAnswer {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 
     public Map<String, ChapterAnswer> getChapterAnswers() {

@@ -71,7 +71,7 @@ public class ExternalApiJobService implements JobService {
 
     @Override
     public void delete(String id, String userId) {
-        HttpEntity<?> request = new HttpEntity<>("", createHeaders());
+        HttpEntity<?> request = new HttpEntity<>(null, createHeaders());
         String url = String.join("/", properties.getApiUrl(), DELETE_JOB, id + "?user=" + userId);
         ResponseEntity<JobInfo> response = restTemplate.exchange(url, HttpMethod.DELETE, request, JobInfo.class);
         if (response.getStatusCode() != HttpStatus.OK) {
