@@ -11,7 +11,7 @@
 	<groupId>eu.intelcomp</groupId>
 	<artifactId>catalogue</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>intelcomp</name>
 	<description>Intelcomp Catalogue Project</description>
 	<properties>
@@ -118,6 +118,15 @@
 				<version>3.0.0-M4</version>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/application.yml</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 
 </project>
