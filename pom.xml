@@ -11,11 +11,12 @@
 	<groupId>eu.intelcomp</groupId>
 	<artifactId>catalogue</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>intelcomp</name>
 	<description>Intelcomp Catalogue Project</description>
 	<properties>
-<!--		<java.version>11</java.version>-->
+		<java.version>11</java.version>
+		<registry-core.version>2.3.5</registry-core.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -36,12 +37,73 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>registry-core-api</artifactId>
+			<version>${registry-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>registry-core-rest</artifactId>
+			<version>${registry-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>registry-core-helper</artifactId>
+			<version>${registry-core.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>gr.athenarc</groupId>
 			<artifactId>catalogue</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>2.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 
 	</dependencies>
+
+
+	<repositories>
+		<repository>
+			<id>omtd-snapshots</id>
+			<layout>default</layout>
+			<url>https://repo.openminted.eu/content/repositories/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>omtd-releases</id>
+			<layout>default</layout>
+			<url>https://repo.openminted.eu/content/repositories/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 
 	<build>
@@ -50,7 +112,21 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>3.0.0-M4</version>
+			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/application.yml</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 
 </project>
