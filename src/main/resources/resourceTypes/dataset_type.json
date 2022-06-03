@@ -11,6 +11,15 @@
     },
     {
       "defaultValue": null,
+      "label": "Resource Class",
+      "multivalued": false,
+      "name": "resourceClass",
+      "path": "//*[local-name()='dataset_type']/*[local-name()='metadata']/*[local-name()='type']/@class",
+      "primaryKey": false,
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": null,
       "label": null,
       "multivalued": false,
       "name": "identifier",
