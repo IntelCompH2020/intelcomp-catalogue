@@ -1,7 +1,7 @@
 package eu.intelcomp.catalogue.domain;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class User {
-    private static final Logger logger = LogManager.getLogger(User.class);
+    private static final Logger logger = LoggerFactory.getLogger(User.class);
 
     private String sub;
     private String email;

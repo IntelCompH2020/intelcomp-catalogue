@@ -3,8 +3,8 @@ package eu.intelcomp.catalogue.controller;
 import eu.openminted.registry.core.exception.ServerError;
 import gr.athenarc.catalogue.controller.GenericExceptionController;
 import gr.athenarc.catalogue.exception.ResourceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,11 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class IntelcompGenericExceptionController extends GenericExceptionController {
 
-    private static final Logger logger = LogManager.getLogger(IntelcompGenericExceptionController.class);
+    private static final Logger logger = LoggerFactory.getLogger(IntelcompGenericExceptionController.class);
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<ServerError> handleUnauthorized(HttpServletRequest req, Exception ex) {
-        logger.info(ex);
+        logger.info(ex.getMessage(), ex);
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         if (ex instanceof ResourceException) {
             status = ((ResourceException) ex).getStatus();
