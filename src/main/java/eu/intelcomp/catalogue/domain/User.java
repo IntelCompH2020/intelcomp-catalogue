@@ -26,7 +26,7 @@ public class User {
     }
 
     public static User of(Authentication auth) {
-        logger.trace(String.format("Creating UserService from Authentication: %n%s", auth));
+        logger.trace("Creating UserService from Authentication: %n{}", auth);
         User user = new User();
         if (auth == null) {
             throw new InsufficientAuthenticationException("You are not authenticated, please log in.");
@@ -49,7 +49,7 @@ public class User {
         } else {
             throw new InsufficientAuthenticationException("Could not create user. Insufficient user authentication");
         }
-        logger.debug(String.format("UserService from Authentication: %s", user));
+        logger.debug("UserService from Authentication: {}", user);
         return user;
     }
 
@@ -94,7 +94,7 @@ public class User {
     }
 
     public static String getId(Authentication auth) {
-        logger.trace(String.format("Retrieving id from Authentication: %n%s", auth));
+        logger.trace("Retrieving id from Authentication: %n{}", auth);
         String id = null;
         if (auth == null) {
             throw new InsufficientAuthenticationException("You are not authenticated, please log in.");
