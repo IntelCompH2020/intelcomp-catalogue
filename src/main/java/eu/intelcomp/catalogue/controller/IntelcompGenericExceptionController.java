@@ -1,8 +1,10 @@
 package eu.intelcomp.catalogue.controller;
 
-import eu.openminted.registry.core.exception.ServerError;
+import gr.athenarc.catalogue.RequestUtils;
+import gr.athenarc.catalogue.config.logging.LogTransactionsFilter;
 import gr.athenarc.catalogue.controller.GenericExceptionController;
 import gr.athenarc.catalogue.exception.ResourceException;
+import gr.athenarc.catalogue.exception.ServerError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,7 @@ public class IntelcompGenericExceptionController extends GenericExceptionControl
     private static final Logger logger = LoggerFactory.getLogger(IntelcompGenericExceptionController.class);
 
     @ExceptionHandler(Exception.class)
-    ResponseEntity<ServerError> handleUnauthorized(HttpServletRequest req, Exception ex) {
+    ResponseEntity<ServerError> handleException(HttpServletRequest req, Exception ex) {
         logger.info(ex.getMessage(), ex);
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         if (ex instanceof ResourceException) {
@@ -35,7 +37,7 @@ public class IntelcompGenericExceptionController extends GenericExceptionControl
         }
         return ResponseEntity
                 .status(status)
-                .body(new ServerError(req.getRequestURL().toString(), ex));
+                .body(new ServerError(status, req, ex));
     }
 
 
