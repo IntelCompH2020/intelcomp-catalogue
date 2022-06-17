@@ -1,8 +1,8 @@
 package eu.intelcomp.catalogue.config;
 
 import com.nimbusds.jose.shaded.json.JSONArray;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import java.util.Set;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final Logger logger = LogManager.getLogger(SecurityConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     private final AuthenticationSuccessHandler authSuccessHandler;
     private final ApplicationProperties applicationProperties;
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-//                        .regexMatchers("/forms/.*", "/dump/.*", "/restore/", "/resources.*", "/resourceType.*", "/search.*").hasAnyAuthority("ADMIN")
+                        .regexMatchers("/forms/.*", "/dump/.*", "/restore/", "/resources.*", "/resourceType.*", "/search.*", "/logs.*").hasAnyAuthority("ADMIN")
                         .anyRequest().permitAll())
                 .oauth2Login()
                 .successHandler(authSuccessHandler)
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                     JSONArray icRoles = ((JSONArray) oidcUserAuthority.getAttributes().get("ic-roles"));
                     if (icRoles != null) {
-                        for (int i=0; i< icRoles.size(); i++) {
+                        for (int i = 0; i < icRoles.size(); i++) {
                             mappedAuthorities.add(new SimpleGrantedAuthority(icRoles.get(i).toString().toUpperCase()));
                         }
                     }

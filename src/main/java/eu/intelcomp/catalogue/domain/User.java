@@ -1,7 +1,7 @@
 package eu.intelcomp.catalogue.domain;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class User {
-    private static final Logger logger = LogManager.getLogger(User.class);
+    private static final Logger logger = LoggerFactory.getLogger(User.class);
 
     private String sub;
     private String email;
@@ -26,7 +26,7 @@ public class User {
     }
 
     public static User of(Authentication auth) {
-        logger.trace(String.format("Creating UserService from Authentication: %n%s", auth));
+        logger.trace("Creating UserService from Authentication: %n{}", auth);
         User user = new User();
         if (auth == null) {
             throw new InsufficientAuthenticationException("You are not authenticated, please log in.");
@@ -49,7 +49,7 @@ public class User {
         } else {
             throw new InsufficientAuthenticationException("Could not create user. Insufficient user authentication");
         }
-        logger.debug(String.format("UserService from Authentication: %s", user));
+        logger.debug("UserService from Authentication: {}", user);
         return user;
     }
 
@@ -94,7 +94,7 @@ public class User {
     }
 
     public static String getId(Authentication auth) {
-        logger.trace(String.format("Retrieving id from Authentication: %n%s", auth));
+        logger.trace("Retrieving id from Authentication: %n{}", auth);
         String id = null;
         if (auth == null) {
             throw new InsufficientAuthenticationException("You are not authenticated, please log in.");

@@ -4,18 +4,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.intelcomp.catalogue.domain.ModelAnswer;
 import gr.athenarc.catalogue.service.GenericItemService;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("datasets")
 public class DatasetController {
 
-    private static final Logger logger = LogManager.getLogger(DatasetController.class);
+    private static final Logger logger = LoggerFactory.getLogger(DatasetController.class);
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final GenericItemService genericItemService;
@@ -33,7 +36,7 @@ public class DatasetController {
             Object answer = JSONValue.parse(json);
             dataset = new ModelAnswer((JSONObject) answer);
         } catch (JsonProcessingException e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }
 
         return dataset;
