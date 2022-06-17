@@ -172,6 +172,7 @@
 				<filtering>true</filtering>
 				<excludes>
 					<exclude>**/application.yml</exclude>
+					<exclude>**/registry.properties</exclude>
 				</excludes>
 			</resource>
 		</resources>
