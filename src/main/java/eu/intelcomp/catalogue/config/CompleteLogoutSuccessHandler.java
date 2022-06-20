@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -34,7 +33,14 @@ public class CompleteLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler 
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        URL url = ((DefaultOidcUser) (((OAuth2AuthenticationToken) authentication).getPrincipal())).getIssuer();
+        URL url = null;
+        if (authentication != null) {
+            try {
+                url = ((DefaultOidcUser) (((OAuth2AuthenticationToken) authentication).getPrincipal())).getIssuer();
+            } catch (RuntimeException e) {
+                logger.error("Error retrieving auth issuer url", e);
+            }
+        }
         String logoutEndpoint = getLogoutEndpoint(url);
         String logoutUrl;
         if (logoutEndpoint != null) {
@@ -47,14 +53,17 @@ public class CompleteLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler 
     }
 
     private String getLogoutEndpoint(URL issuerUrl) {
-        Map<String, String> map = new HashMap<>();
+        if (issuerUrl == null) {
+            return null;
+        }
+        Map<String, String> map;
         try {
-            issuerUrl = new URL(issuerUrl.toString() + OPENID_CONFIGURATION);
+            issuerUrl = new URL(issuerUrl + OPENID_CONFIGURATION);
             map = (Map<String, String>) restTemplate.getForObject(issuerUrl.toURI(), Map.class);
         } catch (MalformedURLException | URISyntaxException e) {
             logger.error("Error attempting to find Logout Endpoint", e);
             throw new RuntimeException(e);
         }
-        return map.get(END_SESSION_ENDPOINT);
+        return map != null ? map.get(END_SESSION_ENDPOINT) : null;
     }
 }
