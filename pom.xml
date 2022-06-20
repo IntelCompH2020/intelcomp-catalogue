@@ -16,7 +16,7 @@
 	<description>Intelcomp Catalogue Project</description>
 	<properties>
 		<java.version>11</java.version>
-		<registry-core.version>2.3.6-SNAPSHOT</registry-core.version>
+		<registry-core.version>2.3.7-SNAPSHOT</registry-core.version>
 	</properties>
 	<dependencies>
 		<dependency>
