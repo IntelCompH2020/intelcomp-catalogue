@@ -16,7 +16,7 @@
 	<description>Intelcomp Catalogue Project</description>
 	<properties>
 		<java.version>11</java.version>
-		<registry-core.version>2.3.6-SNAPSHOT</registry-core.version>
+		<registry-core.version>2.3.7</registry-core.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>gr.athenarc</groupId>
 			<artifactId>catalogue</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
+			<version>3.0.0</version>
 		</dependency>
 
 		<dependency>

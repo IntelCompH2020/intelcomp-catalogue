@@ -3,6 +3,7 @@ package eu.intelcomp.catalogue.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.intelcomp.catalogue.domain.ModelAnswer;
+import eu.openminted.registry.core.service.SearchService;
 import gr.athenarc.catalogue.service.GenericItemService;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -43,8 +44,10 @@ public class DatasetController {
     }
 
     // TODO: helper method, remove when job filter is implemented correctly from @CITE
-    @GetMapping("instances/{id}/internalid")
-    public String getCoreId(@PathVariable("id") String id) {
-        return genericItemService.searchResource("dataset_instance", id, true).getId();
+    @GetMapping("instances/{type}/{version}/internalid")
+    public String getCoreId(@PathVariable("type") String type, @PathVariable("version") String version) {
+        SearchService.KeyValue typeKeyValue = new SearchService.KeyValue("type", type);
+        SearchService.KeyValue versionKeyValue = new SearchService.KeyValue("version", version);
+        return genericItemService.searchResource("dataset_instance", typeKeyValue, versionKeyValue).getId();
     }
 }

@@ -2,7 +2,6 @@ package eu.intelcomp.catalogue.config.logging;
 
 import eu.intelcomp.catalogue.domain.User;
 import gr.athenarc.catalogue.config.logging.AbstractLogContextFilter;
-import org.slf4j.MDC;
 import org.slf4j.spi.MDCAdapter;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -29,12 +30,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     private final AuthenticationSuccessHandler authSuccessHandler;
+    private final CompleteLogoutSuccessHandler logoutSuccessHandler;
     private final ApplicationProperties applicationProperties;
 
     @Autowired
     public SecurityConfig(AuthenticationSuccessHandler authSuccessHandler,
+                          CompleteLogoutSuccessHandler logoutSuccessHandler,
                           ApplicationProperties applicationProperties) {
         this.authSuccessHandler = authSuccessHandler;
+        this.logoutSuccessHandler = logoutSuccessHandler;
         this.applicationProperties = applicationProperties;
     }
 
@@ -42,14 +46,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .regexMatchers("/forms/.*", "/dump/.*", "/restore/", "/resources.*", "/resourceType.*", "/search.*", "/logs.*").hasAnyAuthority("ADMIN")
+                        .regexMatchers("/dump/.*", "/restore/", "/resources.*", "/resourceType.*", "/search.*", "/logs.*").hasAnyAuthority("ADMIN")
+                        .antMatchers(HttpMethod.GET, "/forms/**").permitAll()
+                        .antMatchers( "/forms/**").hasAnyAuthority("ADMIN")
                         .anyRequest().permitAll())
                 .oauth2Login()
                 .successHandler(authSuccessHandler)
                 .and()
-                .logout().logoutSuccessUrl(applicationProperties.getLogoutRedirect())
+                .logout()
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("AccessToken")
                 .and()
-                .cors().disable()
+                .cors()
+                .and()
                 .csrf().disable();
     }
 
@@ -68,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     JSONArray icRoles = ((JSONArray) oidcUserAuthority.getAttributes().get("ic-roles"));
                     if (icRoles != null) {
                         for (int i = 0; i < icRoles.size(); i++) {
+
                             mappedAuthorities.add(new SimpleGrantedAuthority(icRoles.get(i).toString().toUpperCase()));
                         }
                     }
