@@ -46,9 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .regexMatchers("/dump/.*", "/restore/", "/resources.*", "/resourceType.*", "/search.*", "/logs.*").hasAnyAuthority("ADMIN")
-                        .antMatchers(HttpMethod.GET, "/forms/**").permitAll()
-                        .antMatchers( "/forms/**").hasAnyAuthority("ADMIN")
+//                        .regexMatchers("/dump/.*", "/restore/", "/resources.*", "/resourceType.*", "/search.*", "/logs.*").hasAnyAuthority("ADMIN")
+//                        .antMatchers(HttpMethod.GET, "/forms/**").permitAll()
+//                        .antMatchers( "/forms/**").hasAnyAuthority("ADMIN")
                         .anyRequest().permitAll())
                 .oauth2Login()
                 .successHandler(authSuccessHandler)
