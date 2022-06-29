@@ -4,6 +4,7 @@
 Changes in v0.0.3
 
  - In preparation for the tools, the "location" element is no longer mandatory
+ - Added an id
 
 -->
 
@@ -12,19 +13,20 @@ Changes in v0.0.3
     <xs:element name="dataset_instance">
         <xs:complexType>
             <xs:sequence>
+                <xs:element name="id" type="xs:string" minOccurs="1" maxOccurs="1" />
                 <xs:element name="type" type="xs:string" />
                 <xs:element name="metadata" type="metadataType" />
                 <xs:element name="location" minOccurs="0" maxOccurs="1">
                     <xs:complexType>
-                        <xs:choice>
-                            <xs:element name="files">
+                        <xs:sequence>
+                            <xs:element name="files" minOccurs="0" maxOccurs="1">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="baseDir" type="xs:string" />
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="database">
+                            <xs:element name="database" minOccurs="0" maxOccurs="1">
                                 <xs:complexType>
                                     <xs:all>
                                         <xs:element name="type" type="xs:string" />
@@ -33,7 +35,7 @@ Changes in v0.0.3
                                     </xs:all>
                                 </xs:complexType>
                             </xs:element>
-                        </xs:choice>
+                        </xs:sequence>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
