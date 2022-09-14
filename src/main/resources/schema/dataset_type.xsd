@@ -6,8 +6,9 @@ Changes in v0.0.3
  - In preparation for the tools, the "schema" element is no longer mandatory
  
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="https://www.w3.org/2009/01/xml.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ins="http://datacite.org/schema/kernel-4" elementFormDefault="qualified">
+<!--    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="https://www.w3.org/2009/01/xml.xsd"/>-->
+    <xs:import namespace="http://datacite.org/schema/kernel-4" schemaLocation="imports.xsd"/>
     <xs:element name="dataset_type">
         <xs:complexType>
             <xs:sequence>
@@ -35,7 +36,7 @@ Changes in v0.0.3
                                             <xs:complexType>
                                                 <xs:simpleContent>
                                                     <xs:extension base="xs:string">
-                                                        <xs:attribute name="titleType" type="titleType" use="optional"/>
+                                                        <xs:attribute name="titleType" type="ins:titleType" use="optional"/>
                                                         <xs:attribute ref="xml:lang"/>
                                                     </xs:extension>
                                                 </xs:simpleContent>
@@ -81,7 +82,7 @@ Changes in v0.0.3
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
-                                            <xs:attribute name="class" type="resourceType" use="required"/>
+                                            <xs:attribute name="class" type="ins:resourceType" use="required"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -114,8 +115,8 @@ Changes in v0.0.3
                                             <xs:complexType>
                                                 <xs:simpleContent>
                                                     <xs:extension base="xs:string">
-                                                        <xs:attribute name="relatedIdentifierType" type="relatedIdentifierType" use="required"/>
-                                                        <xs:attribute name="relationType" type="relationType" use="required"/>
+                                                        <xs:attribute name="relatedIdentifierType" type="ins:relatedIdentifierType" use="required"/>
+                                                        <xs:attribute name="relationType" type="ins:relationType" use="required"/>
                                                         <xs:attribute name="relatedMetadataScheme" use="optional"/>
                                                         <xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
                                                         <xs:attribute name="schemeType" use="optional"/>
@@ -166,7 +167,7 @@ Changes in v0.0.3
                                             <xs:complexType>
                                                 <xs:simpleContent>
                                                     <xs:extension base="xs:string">
-                                                        <xs:attribute name="descriptionType" type="descriptionType" use="required"/>
+                                                        <xs:attribute name="descriptionType" type="ins:descriptionType" use="required"/>
                                                         <xs:attribute ref="xml:lang"/>
                                                     </xs:extension>
                                                 </xs:simpleContent>
@@ -186,8 +187,8 @@ Changes in v0.0.3
                                             </xs:annotation>
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="geoLocationPoint" type="point" minOccurs="0"/>
-                                                    <xs:element name="geoLocationBox" type="box" minOccurs="0"/>
+                                                    <xs:element name="geoLocationPoint" type="ins:point" minOccurs="0"/>
+                                                    <xs:element name="geoLocationBox" type="ins:box" minOccurs="0"/>
                                                     <xs:element name="geoLocationPlace" minOccurs="0"/>
                                                 </xs:sequence>
                                             </xs:complexType>
@@ -248,7 +249,7 @@ Changes in v0.0.3
                         <xs:sequence>
                             <xs:element name="type">
                                 <xs:simpleType>
-                                    <xs:restriction base="schemaType"/>
+                                    <xs:restriction base="ins:schemaType"/>
                                 </xs:simpleType>
                             </xs:element>
                             <xs:element name="entities">
@@ -287,127 +288,4 @@ Changes in v0.0.3
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:simpleType name="titleType" id="titleType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="AlternativeTitle"/>
-            <xs:enumeration value="Subtitle"/>
-            <xs:enumeration value="TranslatedTitle"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <!-- Created with Liquid Studio 2021 (https://www.liquid-technologies.com) -->
-    <xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="resourceType" id="resourceType">
-        <xs:annotation>
-            <xs:documentation>The general type of a resource.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Audiovisual"/>
-            <xs:enumeration value="Collection"/>
-            <xs:enumeration value="Dataset"/>
-            <xs:enumeration value="Event"/>
-            <xs:enumeration value="Image"/>
-            <xs:enumeration value="InteractiveResource"/>
-            <xs:enumeration value="Model"/>
-            <xs:enumeration value="PhysicalObject"/>
-            <xs:enumeration value="Service"/>
-            <xs:enumeration value="Software"/>
-            <xs:enumeration value="Sound"/>
-            <xs:enumeration value="Text"/>
-            <xs:enumeration value="Workflow"/>
-            <xs:enumeration value="Other"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="point">
-        <xs:restriction base="listOfDoubles">
-            <xs:minLength value="2"/>
-            <xs:maxLength value="2"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="box">
-        <xs:restriction base="listOfDoubles">
-            <xs:minLength value="4"/>
-            <xs:maxLength value="4"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="listOfDoubles">
-        <xs:list itemType="xs:double"/>
-    </xs:simpleType>
-    <xs:simpleType id="descriptionType" name="descriptionType">
-        <xs:annotation>
-            <xs:documentation>The type of the description.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Abstract"/>
-            <xs:enumeration value="Methods"/>
-            <xs:enumeration value="SeriesInformation"/>
-            <xs:enumeration value="TableOfContents"/>
-            <xs:enumeration value="Other"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType id="schemaType" name="schemaType">
-        <xs:annotation>
-            <xs:documentation>The type of the entity.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="file"/>
-            <xs:enumeration value="database"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <!-- Created with Liquid Studio 2021 (https://www.liquid-technologies.com) -->
-    <xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" id="relatedIdentifierType" name="relatedIdentifierType">
-        <xs:annotation>
-            <xs:documentation>The type of the RelatedIdentifier.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="ARK"/>
-            <xs:enumeration value="arXiv"/>
-            <xs:enumeration value="bibcode"/>
-            <xs:enumeration value="DOI"/>
-            <xs:enumeration value="EAN13"/>
-            <xs:enumeration value="EISSN"/>
-            <xs:enumeration value="Handle"/>
-            <xs:enumeration value="ISBN"/>
-            <xs:enumeration value="ISSN"/>
-            <xs:enumeration value="ISTC"/>
-            <xs:enumeration value="LISSN"/>
-            <xs:enumeration value="LSID"/>
-            <xs:enumeration value="PMID"/>
-            <xs:enumeration value="PURL"/>
-            <xs:enumeration value="UPC"/>
-            <xs:enumeration value="URL"/>
-            <xs:enumeration value="URN"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <!-- Created with Liquid Studio 2021 (https://www.liquid-technologies.com) -->
-    <xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" id="relationType" name="relationType">
-        <xs:annotation>
-            <xs:documentation>Description of the relationship of the resource being registered (A) and the related resource (B).</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="IsCitedBy"/>
-            <xs:enumeration value="Cites"/>
-            <xs:enumeration value="IsSupplementTo"/>
-            <xs:enumeration value="IsSupplementedBy"/>
-            <xs:enumeration value="IsContinuedBy"/>
-            <xs:enumeration value="Continues"/>
-            <xs:enumeration value="IsNewVersionOf"/>
-            <xs:enumeration value="IsPreviousVersionOf"/>
-            <xs:enumeration value="IsPartOf"/>
-            <xs:enumeration value="HasPart"/>
-            <xs:enumeration value="IsReferencedBy"/>
-            <xs:enumeration value="References"/>
-            <xs:enumeration value="IsDocumentedBy"/>
-            <xs:enumeration value="Documents"/>
-            <xs:enumeration value="IsCompiledBy"/>
-            <xs:enumeration value="Compiles"/>
-            <xs:enumeration value="IsVariantFormOf"/>
-            <xs:enumeration value="IsOriginalFormOf"/>
-            <xs:enumeration value="IsIdenticalTo"/>
-            <xs:enumeration value="HasMetadata"/>
-            <xs:enumeration value="IsMetadataFor"/>
-            <xs:enumeration value="Reviews"/>
-            <xs:enumeration value="IsReviewedBy"/>
-            <xs:enumeration value="IsDerivedFrom"/>
-            <xs:enumeration value="IsSourceOf"/>
-        </xs:restriction>
-    </xs:simpleType>
 </xs:schema>

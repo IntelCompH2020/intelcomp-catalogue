@@ -8,8 +8,8 @@ Changes in v0.0.3
 
 -->
 
-<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:import schemaLocation="https://www.w3.org/2009/01/xml.xsd" namespace="http://www.w3.org/XML/1998/namespace" />
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ins="http://datacite.org/schema/kernel-4" elementFormDefault="qualified" xml:lang="EN">
+    <xs:import namespace="http://datacite.org/schema/kernel-4" schemaLocation="imports.xsd"/>
     <xs:element name="dataset_instance">
         <xs:complexType>
             <xs:sequence>
@@ -112,7 +112,7 @@ Changes in v0.0.3
                                     </xs:element>
                                     <xs:element name="affiliation" minOccurs="0" maxOccurs="unbounded" />
                                 </xs:sequence>
-                                <xs:attribute name="contributorType" type="contributorType" use="required" />
+                                <xs:attribute name="contributorType" type="ins:contributorType" use="required" />
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
@@ -129,7 +129,7 @@ Changes in v0.0.3
                             <xs:complexType>
                                 <xs:simpleContent>
                                     <xs:extension base="xs:string">
-                                        <xs:attribute name="dateType" type="dateType" use="required" />
+                                        <xs:attribute name="dateType" type="ins:dateType" use="required" />
                                     </xs:extension>
                                 </xs:simpleContent>
                             </xs:complexType>
@@ -150,49 +150,4 @@ Changes in v0.0.3
             </xs:element>
         </xs:all>
     </xs:complexType>
-    <xs:simpleType id="dateType" name="dateType">
-        <xs:annotation>
-            <xs:documentation>The type of date. Use RKMS‐ISO8601 standard for depicting date ranges.To indicate the end of an embargo period, use Available. To indicate the start of an embargo period, use Submitted or Accepted, as appropriate.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Accepted" />
-            <xs:enumeration value="Available" />
-            <xs:enumeration value="Collected" />
-            <xs:enumeration value="Copyrighted" />
-            <xs:enumeration value="Created" />
-            <xs:enumeration value="Issued" />
-            <xs:enumeration value="Submitted" />
-            <xs:enumeration value="Updated" />
-            <xs:enumeration value="Valid" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType id="contributorType" name="contributorType">
-        <xs:annotation>
-            <xs:documentation>The type of contributor of the resource.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="ContactPerson" />
-            <xs:enumeration value="DataCollector" />
-            <xs:enumeration value="DataCurator" />
-            <xs:enumeration value="DataManager" />
-            <xs:enumeration value="Distributor" />
-            <xs:enumeration value="Editor" />
-            <xs:enumeration value="Funder" />
-            <xs:enumeration value="HostingInstitution" />
-            <xs:enumeration value="Other" />
-            <xs:enumeration value="Producer" />
-            <xs:enumeration value="ProjectLeader" />
-            <xs:enumeration value="ProjectManager" />
-            <xs:enumeration value="ProjectMember" />
-            <xs:enumeration value="RegistrationAgency" />
-            <xs:enumeration value="RegistrationAuthority" />
-            <xs:enumeration value="RelatedPerson" />
-            <xs:enumeration value="ResearchGroup" />
-            <xs:enumeration value="RightsHolder" />
-            <xs:enumeration value="Researcher" />
-            <xs:enumeration value="Sponsor" />
-            <xs:enumeration value="Supervisor" />
-            <xs:enumeration value="WorkPackageLeader" />
-        </xs:restriction>
-    </xs:simpleType>
 </xs:schema>
