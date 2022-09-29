@@ -11,15 +11,6 @@
     },
     {
       "defaultValue": null,
-      "label": null,
-      "multivalued": false,
-      "name": "identifier",
-      "path": "//*[local-name()='tool']/*[local-name()='identifier']/text()",
-      "primaryKey": true,
-      "type": "java.lang.String"
-    },
-    {
-      "defaultValue": null,
       "label": "Resource Type",
       "multivalued": false,
       "name": "resourceType",
