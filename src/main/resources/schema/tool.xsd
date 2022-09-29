@@ -25,6 +25,7 @@
     <xs:complexType>
       <xs:all>
         <!--REQUIRED FIELDS-->
+        <xs:element name="id" type="xs:string" minOccurs="1" maxOccurs="1" />
         <xs:element name="identifier">
           <xs:annotation>
             <xs:documentation>A persistent identifier that identifies a resource.</xs:documentation>
