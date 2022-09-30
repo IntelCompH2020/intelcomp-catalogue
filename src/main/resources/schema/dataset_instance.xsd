@@ -9,7 +9,7 @@ Changes in v0.0.3
 -->
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ins="http://datacite.org/schema/kernel-4" elementFormDefault="qualified" xml:lang="EN">
-    <xs:import namespace="http://datacite.org/schema/kernel-4" schemaLocation="imports.xsd"/>
+    <xs:import namespace="http://datacite.org/schema/kernel-4" schemaLocation="./imports.xsd"/>
     <xs:element name="dataset_instance">
         <xs:complexType>
             <xs:sequence>
