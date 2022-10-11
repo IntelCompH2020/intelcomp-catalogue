@@ -1,7 +1,5 @@
 package eu.intelcomp.catalogue.controller;
 
-import gr.athenarc.catalogue.RequestUtils;
-import gr.athenarc.catalogue.config.logging.LogTransactionsFilter;
 import gr.athenarc.catalogue.controller.GenericExceptionController;
 import gr.athenarc.catalogue.exception.ResourceException;
 import gr.athenarc.catalogue.exception.ServerError;
@@ -24,15 +22,20 @@ public class IntelcompGenericExceptionController extends GenericExceptionControl
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<ServerError> handleException(HttpServletRequest req, Exception ex) {
-        logger.info(ex.getMessage(), ex);
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         if (ex instanceof ResourceException) {
+            logger.info(ex.getMessage(), ex);
             status = ((ResourceException) ex).getStatus();
         } else if (ex instanceof HttpClientErrorException) {
+            logger.info(ex.getMessage(), ex);
             status = ((HttpClientErrorException) ex).getStatusCode();
         } else if (ex instanceof AccessDeniedException) {
+            logger.info(ex.getMessage());
+            logger.debug(ex.getMessage(), ex);
             status = HttpStatus.FORBIDDEN;
         } else if (ex instanceof InsufficientAuthenticationException) {
+            logger.info(ex.getMessage());
+            logger.debug(ex.getMessage(), ex);
             status = HttpStatus.UNAUTHORIZED;
         }
         return ResponseEntity

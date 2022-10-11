@@ -74,10 +74,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     OidcIdToken idToken = oidcUserAuthority.getIdToken();
                     OidcUserInfo userInfo = oidcUserAuthority.getUserInfo();
 
+                    logger.debug("User attributes: {}", oidcUserAuthority.getAttributes());
                     JSONArray icRoles = ((JSONArray) oidcUserAuthority.getAttributes().get("ic-roles"));
+                    logger.debug("User attributes.ic-roles: {}", icRoles);
                     if (icRoles != null) {
                         for (int i = 0; i < icRoles.size(); i++) {
-
                             mappedAuthorities.add(new SimpleGrantedAuthority(icRoles.get(i).toString().toUpperCase()));
                         }
                     }
@@ -110,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 }
             });
-
+            logger.debug("Granted Authorities: {}", mappedAuthorities);
             return mappedAuthorities;
         };
     }

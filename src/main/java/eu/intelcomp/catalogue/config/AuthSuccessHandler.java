@@ -1,5 +1,6 @@
 package eu.intelcomp.catalogue.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
     private static final Logger logger = LoggerFactory.getLogger(AuthSuccessHandler.class);
 
     private final ApplicationProperties applicationProperties;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public AuthSuccessHandler(ApplicationProperties applicationProperties) {
@@ -41,7 +43,9 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         cookie.setPath("/");
 //        cookie.setSecure(true);
 
+        logger.debug("Assigning Cookie: {}", objectMapper.writeValueAsString(cookie));
         response.addCookie(cookie);
+        logger.debug("Authentication Successful - Redirecting to: {}", applicationProperties.getLoginRedirect());
         response.sendRedirect(applicationProperties.getLoginRedirect());
     }
 
