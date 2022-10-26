@@ -37,6 +37,8 @@ public class IntelcompGenericExceptionController extends GenericExceptionControl
             logger.info(ex.getMessage());
             logger.debug(ex.getMessage(), ex);
             status = HttpStatus.UNAUTHORIZED;
+        } else {
+            logger.error(ex.getMessage(), ex);
         }
         return ResponseEntity
                 .status(status)
