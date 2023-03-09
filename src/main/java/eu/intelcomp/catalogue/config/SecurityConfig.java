@@ -13,9 +13,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -68,14 +71,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
             authorities.forEach(authority -> {
-                if (OidcUserAuthority.class.isInstance(authority)) {
+                if (authority instanceof OidcUserAuthority) {
                     OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
 
                     OidcIdToken idToken = oidcUserAuthority.getIdToken();
                     OidcUserInfo userInfo = oidcUserAuthority.getUserInfo();
 
                     logger.debug("User attributes: {}", oidcUserAuthority.getAttributes());
-                    JSONArray icRoles = ((JSONArray) oidcUserAuthority.getAttributes().get("ic-roles"));
+                    logger.debug("User Token Claims: {}", idToken.getClaims());
+                    JSONArray icRoles = ((JSONArray) oidcUserAuthority.getIdToken().getClaims().get("ic-roles"));
                     logger.debug("User attributes.ic-roles: {}", icRoles);
                     if (icRoles != null) {
                         for (int i = 0; i < icRoles.size(); i++) {
@@ -98,14 +102,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     // Map the claims found in idToken and/or userInfo
                     // to one or more GrantedAuthority's and add it to mappedAuthorities
 
-                } else if (OAuth2UserAuthority.class.isInstance(authority)) {
-                    OAuth2UserAuthority oauth2UserAuthority = (OAuth2UserAuthority) authority;
+                } else if (authority instanceof OAuth2UserAuthority) {
 
-                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
+                    OAuth2User oauth2User = (OAuth2User) authority;
+                    Map<String, Object> userAttributes = oauth2User.getAttributes();
 
                     if (userAttributes != null && applicationProperties.getAdmins().contains(userAttributes.get("email"))) {
                         mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
                     }
+
+                    mappedAuthorities.addAll(oauth2User.getAuthorities());
                     // Map the attributes found in userAttributes
                     // to one or more GrantedAuthority's and add it to mappedAuthorities
 
