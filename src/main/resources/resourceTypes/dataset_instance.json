@@ -4,6 +4,15 @@
       "defaultValue": null,
       "label": null,
       "multivalued": false,
+      "name": "resource_internal_id",
+      "path": "//*[local-name()='dataset_instance']/*[local-name()='id']/text()",
+      "primaryKey": true,
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": null,
+      "label": null,
+      "multivalued": false,
       "name": "dataset_instance_id",
       "path": "//*[local-name()='dataset_instance']/*[local-name()='id']/text()",
       "primaryKey": true,

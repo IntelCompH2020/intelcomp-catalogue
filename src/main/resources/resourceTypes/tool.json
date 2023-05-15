@@ -4,6 +4,15 @@
       "defaultValue": null,
       "label": null,
       "multivalued": false,
+      "name": "resource_internal_id",
+      "path": "//*[local-name()='tool']/*[local-name()='id']/text()",
+      "primaryKey": true,
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": null,
+      "label": null,
+      "multivalued": false,
       "name": "tool_id",
       "path": "//*[local-name()='tool']/*[local-name()='id']/text()",
       "primaryKey": true,
