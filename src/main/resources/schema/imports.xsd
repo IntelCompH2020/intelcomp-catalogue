@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Liquid Studio 2021 (https://www.liquid-technologies.com) -->
 <!-- Revision history
   2010-08-26 Complete revision according to new common specification by the metadata work group after review. AJH, DTIC
   2010-11-17 Revised to current state of kernel review, FZ, TIB
@@ -88,34 +89,6 @@
             <xs:pattern value="[\d]{4}" />
         </xs:restriction>
     </xs:simpleType>
-    <!-- definitions for geoLocation -->
-    <xs:complexType name="point">
-        <xs:all>
-            <xs:element name="pointLongitude" type="longitudeType" minOccurs="1" />
-            <xs:element name="pointLatitude" type="latitudeType" minOccurs="1" />
-        </xs:all>
-    </xs:complexType>
-    <xs:complexType name="box">
-        <xs:all>
-            <xs:element name="westBoundLongitude" type="longitudeType" minOccurs="1" />
-            <xs:element name="eastBoundLongitude" type="longitudeType" minOccurs="1" />
-            <xs:element name="southBoundLatitude" type="latitudeType" minOccurs="1" />
-            <xs:element name="northBoundLatitude" type="latitudeType" minOccurs="1" />
-        </xs:all>
-    </xs:complexType>
-    <xs:simpleType name="longitudeType">
-        <xs:restriction base="xs:float">
-            <xs:minInclusive value="-180" />
-            <xs:maxInclusive value="180" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="latitudeType">
-        <xs:restriction base="xs:float">
-            <xs:minInclusive value="-90" />
-            <xs:maxInclusive value="90" />
-        </xs:restriction>
-    </xs:simpleType>
-
     <xs:simpleType name="titleType" id="titleType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="AlternativeTitle"/>
@@ -128,20 +101,8 @@
             <xs:documentation>The general type of a resource.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Audiovisual"/>
-            <xs:enumeration value="Collection"/>
-            <xs:enumeration value="Dataset"/>
-            <xs:enumeration value="Event"/>
-            <xs:enumeration value="Image"/>
-            <xs:enumeration value="InteractiveResource"/>
-            <xs:enumeration value="Model"/>
-            <xs:enumeration value="PhysicalObject"/>
-            <xs:enumeration value="Service"/>
             <xs:enumeration value="Software"/>
-            <xs:enumeration value="Sound"/>
-            <xs:enumeration value="Text"/>
             <xs:enumeration value="Workflow"/>
-            <xs:enumeration value="Other"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType id="descriptionType" name="descriptionType">
