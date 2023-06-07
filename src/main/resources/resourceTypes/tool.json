@@ -116,5 +116,5 @@
   "properties": {
     "class": "eu.intelcomp.xsd2java.Tool"
   },
-  "schemaUrl": "https://raw.githubusercontent.com/IntelCompH2020/intelcomp-catalogue/changed_schema/src/main/resources/schema/tool.xsd"
+  "schemaUrl": "https://raw.githubusercontent.com/IntelCompH2020/intelcomp-catalogue/develop/src/main/resources/schema/tool.xsd"
 }
