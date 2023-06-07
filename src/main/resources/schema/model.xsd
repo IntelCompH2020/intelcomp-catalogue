@@ -15,7 +15,7 @@
   2019-07-13 v4.3: Addition of new subproperties for Affiliation: "affiliationIdentifier", "affiliationIdentifierScheme", "schemeURI", addition of new sub-property for funderIdentifier: "schemeURI", addition of new funderIdentifierScheme: "ROR", added documentation for nameIdentifier
   2021-03-08 v4.4: Addition of new property relatedItem, relationType value "isPublishedIn", subject subproperty "classificationCode", controlled list "numberType", additional 13 properties for controlled list "resourceType" -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" elementFormDefault="qualified" xml:lang="EN">
-  <xs:import namespace="http://datacite.org/schema/kernel-4" schemaLocation="https://raw.githubusercontent.com/IntelCompH2020/intelcomp-catalogue/changed_schema/src/main/resources/schema/imports.xsd"/>
+  <xs:import namespace="http://datacite.org/schema/kernel-4" schemaLocation="imports.xsd"/>
   <xs:element name="model">
     <xs:annotation>
       <xs:documentation>
