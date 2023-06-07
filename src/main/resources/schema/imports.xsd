@@ -20,6 +20,35 @@
     <xs:include schemaLocation="https://schema.datacite.org/meta/kernel-4.4/include/datacite-funderIdentifierType-v4.xsd"/>
     <xs:include schemaLocation="https://schema.datacite.org/meta/kernel-4.4/include/datacite-numberType-v4.xsd"/>
 
+    <!-- definitions for geoLocation -->
+    <!-- TODO: remove geoLocation -->
+    <xs:complexType name="point">
+        <xs:all>
+            <xs:element name="pointLongitude" type="longitudeType" minOccurs="1" />
+            <xs:element name="pointLatitude" type="latitudeType" minOccurs="1" />
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="box">
+        <xs:all>
+            <xs:element name="westBoundLongitude" type="longitudeType" minOccurs="1" />
+            <xs:element name="eastBoundLongitude" type="longitudeType" minOccurs="1" />
+            <xs:element name="southBoundLatitude" type="latitudeType" minOccurs="1" />
+            <xs:element name="northBoundLatitude" type="latitudeType" minOccurs="1" />
+        </xs:all>
+    </xs:complexType>
+    <xs:simpleType name="longitudeType">
+        <xs:restriction base="xs:float">
+            <xs:minInclusive value="-180" />
+            <xs:maxInclusive value="180" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="latitudeType">
+        <xs:restriction base="xs:float">
+            <xs:minInclusive value="-90" />
+            <xs:maxInclusive value="90" />
+        </xs:restriction>
+    </xs:simpleType>
+
     <!-- TYPE DECLARATIONS -->
     <!-- defines value for mandatory fields -->
     <xs:simpleType name="nonemptycontentStringType">
