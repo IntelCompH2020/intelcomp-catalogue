@@ -23,12 +23,12 @@ public class CompleteLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler 
 
     private final String OPENID_CONFIGURATION = "/.well-known/openid-configuration";
     private final String END_SESSION_ENDPOINT = "end_session_endpoint";
-    private final ApplicationProperties applicationProperties;
+    private final IntelcompProperties intelcompProperties;
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
-    public CompleteLogoutSuccessHandler(ApplicationProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
+    public CompleteLogoutSuccessHandler(IntelcompProperties intelcompProperties) {
+        this.intelcompProperties = intelcompProperties;
     }
 
     @Override
@@ -44,9 +44,9 @@ public class CompleteLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler 
         String logoutEndpoint = getLogoutEndpoint(url);
         String logoutUrl;
         if (logoutEndpoint != null) {
-            logoutUrl = String.format("%s?redirect_uri=%s", logoutEndpoint, applicationProperties.getLogoutRedirect());
+            logoutUrl = String.format("%s?redirect_uri=%s", logoutEndpoint, intelcompProperties.getLogoutRedirect());
         } else {
-            logoutUrl = applicationProperties.getLogoutRedirect();
+            logoutUrl = intelcompProperties.getLogoutRedirect();
         }
         response.sendRedirect(logoutUrl);
         super.onLogoutSuccess(request, response, authentication);

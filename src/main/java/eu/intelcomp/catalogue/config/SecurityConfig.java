@@ -6,15 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
@@ -34,15 +31,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationSuccessHandler authSuccessHandler;
     private final CompleteLogoutSuccessHandler logoutSuccessHandler;
-    private final ApplicationProperties applicationProperties;
+    private final IntelcompProperties intelcompProperties;
 
     @Autowired
     public SecurityConfig(AuthenticationSuccessHandler authSuccessHandler,
                           CompleteLogoutSuccessHandler logoutSuccessHandler,
-                          ApplicationProperties applicationProperties) {
+                          IntelcompProperties intelcompProperties) {
         this.authSuccessHandler = authSuccessHandler;
         this.logoutSuccessHandler = logoutSuccessHandler;
-        this.applicationProperties = applicationProperties;
+        this.intelcompProperties = intelcompProperties;
     }
 
     @Override
@@ -87,14 +84,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         }
                     }
 
-                    if (idToken != null && applicationProperties.getAdmins().contains(idToken.getClaims().get("email"))) {
+                    if (idToken != null && intelcompProperties.getAdmins().contains(idToken.getClaims().get("email"))) {
                         mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
-                    } else if (userInfo != null && applicationProperties.getAdmins().contains(userInfo.getEmail())) {
+                    } else if (userInfo != null && intelcompProperties.getAdmins().contains(userInfo.getEmail())) {
                         mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
                     } else {
                         if (((OidcUserAuthority) authority).getAttributes() != null
                                 && ((OidcUserAuthority) authority).getAttributes().containsKey("email")
-                                && (applicationProperties.getAdmins().contains(((OidcUserAuthority) authority).getAttributes().get("email")))) {
+                                && (intelcompProperties.getAdmins().contains(((OidcUserAuthority) authority).getAttributes().get("email")))) {
                             mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
                         }
                     }
@@ -107,7 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     OAuth2User oauth2User = (OAuth2User) authority;
                     Map<String, Object> userAttributes = oauth2User.getAttributes();
 
-                    if (userAttributes != null && applicationProperties.getAdmins().contains(userAttributes.get("email"))) {
+                    if (userAttributes != null && intelcompProperties.getAdmins().contains(userAttributes.get("email"))) {
                         mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
                     }
 

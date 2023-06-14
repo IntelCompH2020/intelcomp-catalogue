@@ -23,12 +23,12 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthSuccessHandler.class);
 
-    private final ApplicationProperties applicationProperties;
+    private final IntelcompProperties intelcompProperties;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    public AuthSuccessHandler(ApplicationProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
+    public AuthSuccessHandler(IntelcompProperties intelcompProperties) {
+        this.intelcompProperties = intelcompProperties;
     }
 
     @Override
@@ -45,8 +45,8 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
         logger.debug("Assigning Cookie: {}", objectMapper.writeValueAsString(cookie));
         response.addCookie(cookie);
-        logger.debug("Authentication Successful - Redirecting to: {}", applicationProperties.getLoginRedirect());
-        response.sendRedirect(applicationProperties.getLoginRedirect());
+        logger.debug("Authentication Successful - Redirecting to: {}", intelcompProperties.getLoginRedirect());
+        response.sendRedirect(intelcompProperties.getLoginRedirect());
     }
 
     private int createCookieMaxAge(Authentication authentication) {

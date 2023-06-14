@@ -1,13 +1,11 @@
 package eu.intelcomp.catalogue.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-@Component
 @ConfigurationProperties(prefix = "intelcomp")
-public class ApplicationProperties {
+public class IntelcompProperties {
 
     private Set<Object> admins;
 
