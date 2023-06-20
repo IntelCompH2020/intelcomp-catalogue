@@ -2,11 +2,13 @@ package eu.intelcomp.catalogue.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class JobFilters {
 
     private String user;
     private List<String> ids;
+    private List<String> processes;
     private List<String> statuses;
 //    private List<Enum> statuses; #["QUEUED", "FINISHED", "RUNNING"]
     private Date createdAfter;
@@ -33,6 +35,14 @@ public class JobFilters {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public List<String> getProcesses() {
+        return processes;
+    }
+
+    public void setProcesses(List<String> processes) {
+        this.processes = processes;
     }
 
     public List<String> getIds() {

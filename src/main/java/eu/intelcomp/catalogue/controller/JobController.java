@@ -5,8 +5,8 @@ import eu.intelcomp.catalogue.domain.JobFilters;
 import eu.intelcomp.catalogue.domain.JobInfo;
 import eu.intelcomp.catalogue.domain.User;
 import eu.intelcomp.catalogue.service.JobService;
+import gr.athenarc.catalogue.exception.ResourceException;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +26,7 @@ public class JobController {
     }
 
     @PostMapping("execute")
-    @PreAuthorize("hasAuthority('OPERATOR_DATA-PROCESSOR')")
+    @PreAuthorize("(hasAuthority('OPERATOR-WORKFLOW_PROCESSOR') && @jobController.jobIsWorkflow(#job)) || (hasAuthority('OPERATOR_DATA-PROCESSOR') && !@jobController.jobIsWorkflow(#job))")
     public ResponseEntity<JobInfo> add(@RequestBody Job job, @Parameter(hidden = true) Authentication authentication) {
         return new ResponseEntity<>(jobService.add(job, authentication), HttpStatus.OK);
     }
@@ -55,5 +55,16 @@ public class JobController {
         }
         jobService.delete(id, userId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public static boolean jobIsWorkflow(Job job) {
+        if (job == null || job.getServiceArguments() == null || job.getJobArguments() == null) {
+            throw new ResourceException("Incomplete Job information", HttpStatus.BAD_REQUEST);
+        }
+        if (job.getServiceArguments().getProcessId() == null || "".equals(job.getServiceArguments().getProcessId())) {
+            throw new ResourceException("'processId' cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        return job.getServiceArguments().getProcessId().endsWith("-workflow");
     }
 }
