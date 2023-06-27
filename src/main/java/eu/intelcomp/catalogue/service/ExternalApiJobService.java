@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -39,10 +40,12 @@ public class ExternalApiJobService implements JobService {
         if (job == null || job.getServiceArguments() == null || job.getJobArguments() == null) {
             throw new ResourceException("Incomplete Job information", HttpStatus.BAD_REQUEST);
         }
-        if (job.getServiceArguments().getProcessId() == null || "".equals(job.getServiceArguments().getProcessId())) {
+        if (!StringUtils.hasText(job.getServiceArguments().getProcessId())) {
             throw new ResourceException("'processId' cannot be empty", HttpStatus.BAD_REQUEST);
         }
-        job.getServiceArguments().setInfraId("k8s");
+        if (!StringUtils.hasText(job.getServiceArguments().getInfraId())) {
+            job.getServiceArguments().setInfraId("k8s");
+        }
         job.getServiceArguments().setUser(User.of(authentication).getSub());
         HttpEntity<?> request = new HttpEntity<>(job, createHeaders());
         String url = String.join("/", properties.getApiUrl(), EXECUTE_JOB);

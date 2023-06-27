@@ -32,9 +32,9 @@ public class Job {
         this.callerAttributes = callerAttributes;
     }
 
-    public void addJobArgument(String name, String value) {
-        this.jobArguments.add(new JobArgument(name, value));
-    }
+//    public void addJobArgument(String name, String value) {
+//        this.jobArguments.add(new JobArgument(name, value));
+//    }
 
 //    public void addJobArgument(String name, String value) {
 //        this.jobArguments.add(new JobArgument(name, Collections.singletonList(value)));
@@ -98,21 +98,21 @@ public class Job {
 
     public static class JobArgument {
         private String name;
-        private String value;
-//        private List<String> value = new ArrayList<>();
+//        private String value;
+        private List<String> value = new ArrayList<>();
 
         public JobArgument() {
         }
 
-        public JobArgument(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
-
-//        public JobArgument(String name, List<String> value) {
+//        public JobArgument(String name, String value) {
 //            this.name = name;
 //            this.value = value;
 //        }
+
+        public JobArgument(String name, List<String> value) {
+            this.name = name;
+            this.value = value;
+        }
 
         public String getName() {
             return name;
@@ -122,20 +122,20 @@ public class Job {
             this.name = name;
         }
 
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-//        public List<String> getValue() {
+//        public String getValue() {
 //            return value;
 //        }
 //
-//        public void setValue(List<String> value) {
+//        public void setValue(String value) {
 //            this.value = value;
 //        }
+
+        public List<String> getValue() {
+            return value;
+        }
+
+        public void setValue(List<String> value) {
+            this.value = value;
+        }
     }
 }
