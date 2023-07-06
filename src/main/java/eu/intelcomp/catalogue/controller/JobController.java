@@ -6,9 +6,9 @@ import eu.intelcomp.catalogue.domain.Job;
 import eu.intelcomp.catalogue.domain.JobFilters;
 import eu.intelcomp.catalogue.domain.JobInfo;
 import eu.intelcomp.catalogue.domain.User;
+import eu.intelcomp.catalogue.service.JobProperties;
 import eu.intelcomp.catalogue.service.JobService;
 import gr.athenarc.catalogue.exception.ResourceException;
-import gr.athenarc.catalogue.exception.ResourceNotFoundException;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +23,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -39,9 +38,11 @@ public class JobController {
     private static final Logger logger = LoggerFactory.getLogger(JobController.class);
     private static final ObjectMapper mapper = new ObjectMapper();
     private final JobService jobService;
+    private final JobProperties jobProperties;
 
-    public JobController(JobService jobService) {
+    public JobController(JobService jobService, JobProperties jobProperties) {
         this.jobService = jobService;
+        this.jobProperties = jobProperties;
     }
 
     @PostMapping("execute")
@@ -50,12 +51,16 @@ public class JobController {
         return new ResponseEntity<>(jobService.add(job, authentication), HttpStatus.OK);
     }
 
-    @PostMapping(value = "execute/custom", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(value = "execute/custom", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OPERATOR-WORKFLOW_PROCESSOR') && @jobController.jobIsWorkflow(#jobString))")
     public ResponseEntity<JobInfo> addJobWithFile(@RequestParam(name = "job") String jobString, @RequestPart MultipartFile file, @Parameter(hidden = true) Authentication authentication) throws IOException {
         // save
         Job job = mapper.readValue(jobString, Job.class);
-        String location = String.format("/workdir/ui/%s/", UUID.randomUUID());
+        String location = String.format("%s/%s/%s/",
+                jobProperties.getData().getDirectories().getBase(),
+                jobProperties.getData().getDirectories().getInputRelativePath(),
+                UUID.randomUUID()
+        );
         Files.createDirectories(Paths.get(location));
         String filepath = location + file.getOriginalFilename();
         File f = new File(filepath);
@@ -65,11 +70,10 @@ public class JobController {
         fileArgument.setValue(List.of(filepath));
         job.getJobArguments().add(fileArgument);
         JobInfo info = jobService.add(job, authentication);
-//        Files.createDirectories(Paths.get(String.format("/workdir/%s/%s", job.getServiceArguments().getProcessId(), info.getCreatedAt())));
         return new ResponseEntity<>(info, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/{jobId}/output/download", method = RequestMethod.GET)
+    @GetMapping(path = "/{jobId}/output/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Resource> download(@PathVariable("jobId") String id,
                                              @RequestParam String process,
                                              @RequestParam String filename,
@@ -78,7 +82,13 @@ public class JobController {
         ResponseEntity<Resource> responseEntity = ResponseEntity.notFound().build();
         if (info != null) {
             try {
-                File file = new File(String.format("/workdir/%s/%s/output/%s", process, id, filename));
+                File file = new File(String.format("%s/%s/%s/%s/%s",
+                        jobProperties.getData().getDirectories().getBase(),
+                        process,
+                        id,
+                        jobProperties.getData().getDirectories().getOutputRelativePath(),
+                        filename)
+                );
                 Path path = Paths.get(file.getAbsolutePath());
 
                 ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
@@ -87,7 +97,6 @@ public class JobController {
                 responseEntity = ResponseEntity.ok()
                         .headers(headers)
                         .contentLength(file.length())
-                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .body(resource);
             } catch (Exception e) {
                 logger.warn("Could not find file : {}", e.getMessage());
