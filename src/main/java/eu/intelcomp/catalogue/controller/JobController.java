@@ -99,7 +99,7 @@ public class JobController {
 
                 Resource resource = new InputStreamResource(new FileInputStream(path.toFile()));
                 HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s_output.cvs", id));
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s_output.csv", id));
                 responseEntity = ResponseEntity.ok()
                         .headers(headers)
                         .contentLength(file.length())
