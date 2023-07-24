@@ -1,0 +1,68 @@
+{
+  "indexFields": [
+    {
+      "multivalued": false,
+      "name": "resource_internal_id",
+      "path": "$.id",
+      "type": "java.lang.String",
+      "primaryKey": true
+    },
+    {
+      "multivalued": false,
+      "name": "name",
+      "label": "Dataset Name",
+      "path": "$.name",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": false,
+      "name": "owner",
+      "label": "Owner",
+      "path": "$.owner",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": false,
+      "name": "createdBy",
+      "label": "Created By",
+      "path": "$.createdBy",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": false,
+      "name": "creationDate",
+      "label": "Creation Date",
+      "path": "$.creationDate",
+      "type": "java.util.Date"
+    },
+    {
+      "multivalued": false,
+      "name": "modifiedBy",
+      "label": "Modified By",
+      "path": "$.modifiedBy",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": false,
+      "name": "modificationDate",
+      "label": "Modification Date",
+      "path": "$.modificationDate",
+      "type": "java.util.Date"
+    },
+    {
+      "multivalued": true,
+      "name": "usages",
+      "label": "Usages",
+      "path": "$.usages",
+      "type": "java.lang.String"
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "dataset",
+  "aliasGroup": "resourceTypes",
+  "payloadType": "json",
+  "properties": {
+    "class": "eu.intelcomp.catalogue.domain.Dataset"
+  },
+  "schema": "{\n\t\"$schema\": \"https://json-schema.org/draft/2019-09/schema\"\n}"
+}
