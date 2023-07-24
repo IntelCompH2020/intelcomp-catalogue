@@ -11,6 +11,7 @@ public class Dataset {
     private String description;
     private List<String> usages;
     private String owner;
+    private String fileLocation;
     private Date creationDate;
     private String createdBy;
     private Date modificationDate;
@@ -57,6 +58,14 @@ public class Dataset {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public String getFileLocation() {
+        return fileLocation;
+    }
+
+    public void setFileLocation(String fileLocation) {
+        this.fileLocation = fileLocation;
     }
 
     public Date getCreationDate() {
