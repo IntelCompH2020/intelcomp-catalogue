@@ -22,11 +22,19 @@ public class SecurityAspect {
     public SecurityAspect() {
     }
 
-    @Before(value = "execution(* gr.athenarc.catalogue.controller.GenericItemController.create(..)) ||" +
-            "execution(* gr.athenarc.catalogue.controller.GenericItemController.update(..)) ||" +
-            "execution(* gr.athenarc.catalogue.controller.GenericItemController.delete(..))")
-    void authorize(JoinPoint joinPoint) {
-        String resourceType = (String) joinPoint.getArgs()[0];
+    @Before(value = "execution(* gr.athenarc.catalogue.controller.GenericItemController.create(String,..)) && args(resourceType)", argNames = "resourceType")
+    void beforeCreate(String resourceType) {
+        authorize(resourceType);
+    }
+
+    @Before(value = "(execution(* gr.athenarc.catalogue.controller.GenericItemController.update(String, String, ..)) ||" +
+            "execution(* gr.athenarc.catalogue.controller.GenericItemController.delete(String, String, ..))) " +
+            "&& args(id, resourceType,..)", argNames = "id,resourceType")
+    void beforeUpdate_Delete(String id, String resourceType) {
+        authorize(resourceType);
+    }
+
+    void authorize(String resourceType) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean authorized = false;
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
