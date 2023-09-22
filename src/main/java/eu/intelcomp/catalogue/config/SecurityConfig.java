@@ -3,20 +3,21 @@ package eu.intelcomp.catalogue.config;
 import com.nimbusds.jose.shaded.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.util.HashSet;
@@ -25,7 +26,7 @@ import java.util.Set;
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
@@ -33,7 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CompleteLogoutSuccessHandler logoutSuccessHandler;
     private final IntelcompProperties intelcompProperties;
 
-    @Autowired
     public SecurityConfig(AuthenticationSuccessHandler authSuccessHandler,
                           CompleteLogoutSuccessHandler logoutSuccessHandler,
                           IntelcompProperties intelcompProperties) {
@@ -42,14 +42,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.intelcompProperties = intelcompProperties;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    /*
+     * Needed to save client repository in redis session.
+     */
+    @Bean
+    public OAuth2AuthorizedClientRepository authorizedClientRepository() {
+        return new HttpSessionOAuth2AuthorizedClientRepository();
+    }
+
+    @Bean
+    public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
 //                        .regexMatchers("/dump/.*", "/restore/", "/resources.*", "/resourceType.*", "/search.*", "/logs.*").hasAnyAuthority("ADMIN")
 //                        .antMatchers(HttpMethod.GET, "/forms/**").permitAll()
 //                        .antMatchers( "/forms/**").hasAnyAuthority("ADMIN")
                         .anyRequest().permitAll())
+                .oauth2Client()
+                .and()
                 .oauth2Login()
                 .successHandler(authSuccessHandler)
                 .and()
@@ -60,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .csrf().disable();
+        return http.build();
     }
 
     @Bean
