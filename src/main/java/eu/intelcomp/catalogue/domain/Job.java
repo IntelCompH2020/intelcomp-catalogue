@@ -52,7 +52,7 @@ public class Job {
         this.jobArguments = jobArguments;
     }
 
-    public class ServiceArguments {
+    public static class ServiceArguments {
         private String processId;
         private String user;
         private String infraId = "k8s";
@@ -98,16 +98,15 @@ public class Job {
 
     public static class JobArgument {
         private String name;
-//        private String value;
-        private List<String> value = new ArrayList<>();
+        private Object value;
 
         public JobArgument() {
         }
 
-//        public JobArgument(String name, String value) {
-//            this.name = name;
-//            this.value = value;
-//        }
+        public JobArgument(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
 
         public JobArgument(String name, List<String> value) {
             this.name = name;
@@ -122,19 +121,11 @@ public class Job {
             this.name = name;
         }
 
-//        public String getValue() {
-//            return value;
-//        }
-//
-//        public void setValue(String value) {
-//            this.value = value;
-//        }
-
-        public List<String> getValue() {
+        public Object getValue() {
             return value;
         }
 
-        public void setValue(List<String> value) {
+        public void setValue(Object value) {
             this.value = value;
         }
     }
