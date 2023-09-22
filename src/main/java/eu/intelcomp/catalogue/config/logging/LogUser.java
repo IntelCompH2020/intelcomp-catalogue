@@ -1,6 +1,5 @@
 package eu.intelcomp.catalogue.config.logging;
 
-import eu.intelcomp.catalogue.domain.User;
 import gr.athenarc.catalogue.config.logging.AbstractLogContextFilter;
 import org.slf4j.spi.MDCAdapter;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -13,17 +12,19 @@ import java.util.UUID;
 @Component
 public class LogUser extends AbstractLogContextFilter {
 
+    public static final String TRANSACTION_ID = "transaction_id";
+    public static final String USER_INFO = "user_info";
+
     @Override
     public void editMDC(MDCAdapter mdc) {
         String transactionId = UUID.randomUUID().toString();
-        mdc.put("transaction_id", transactionId);
+        mdc.put(TRANSACTION_ID, transactionId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             try {
-                User user = User.of(authentication);
-                mdc.put("user_info", user.toString());
+                mdc.put(USER_INFO, authentication.toString());
             } catch (InsufficientAuthenticationException e) {
-                mdc.put("user_info", authentication.toString());
+                mdc.put(USER_INFO, authentication.toString());
             }
         }
     }
