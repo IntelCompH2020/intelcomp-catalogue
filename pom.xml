@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<registry-core.version>2.7.3</registry-core.version>
+		<elasticsearch.version>7.17.14</elasticsearch.version>
 	</properties>
 	<dependencies>
 		<dependency>
