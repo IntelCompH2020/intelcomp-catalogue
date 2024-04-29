@@ -1,70 +1,89 @@
-springdoc:
-  swagger-ui:
-    version: 3
-    disable-swagger-default-url: true
+management:
+    endpoints:
+        web:
+            exposure:
+                include: openapi, swagger-ui
 
 spring:
-  main:
-    allow-circular-references: true
-    allow-bean-definition-overriding: true
-  flyway:
-#    enabled:false
-    locations: classpath:migrations
-    baseline-on-migrate: true
-  batch:
-    job:
-      enabled: false
-  jms:
-    cache:
-      enabled: false
+    batch:
+        job:
+            enabled: false
+    flyway:
+#        enabled: false
+        baseline-on-migrate: true
+        locations: classpath:migrations
+    http:
+        multipart:
+            max-file-size: 18MB
+            max-request-size: 20MB
+    jms:
+        cache:
+            enabled: false
+    main:
+        allow-bean-definition-overriding: false
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id:
-            client-secret:
+    jackson:
+#        serialization:
+#            fail-on-empty-beans: false
+        jackson:
+            default-property-inclusion: always
+        deserialization:
+            fail-on-unknown-properties: false
+        mapper:
+          auto-detect-fields: true
+        visibility:
+            all: any
 
-          cite:
-            client-id:
-            client-secret:
-            scope:
-              - openid
-              - email
-              - profile
+## Springdoc ##
+openapi:
+    info:
+        license:
+            name: Apache License, Version 2.0
+            url: https://www.apache.org/licenses/LICENSE-2.0
 
-        provider:
-          cite:
-            issuer-uri:
+springdoc:
+    group-configs[0]:
+        group: catalogue
+        display-name: Data Catalogue
+        packages-to-scan:
+            - eu.intelcomp
+            - gr.athenarc.catalogue.controller
+    group-configs[1]:
+        group: catalogue-lib
+        display-name: Catalogue Library
+        packages-to-scan:
+            - gr.athenarc.catalogue
+    group-configs[2]:
+        group: registry
+        display-name: Registry Core
+        packages-to-scan:
+            - eu.openminted
 
-  redis:
-    host:
-    port:
-    password:
+    swagger-ui:
+        doc-expansion: none
+        operations-sorter: method
+        path: /swagger-ui.html
+        syntax-highlight:
+            activated: false
+            theme: obsidian
+        tags-sorter: alpha
+        version: 3
 
-server:
-  port: 8080
-  servlet:
-    contextPath: /intelcomp
-
+## Logging ##
 logging:
-  level:
-    org.springframework.security.: DEBUG
-    org.springframework.security.web.util.: INFO
-    org.springframework.web.client.RestTemplate: DEBUG
-    org.reflections.Reflections: WARN
+    level:
+        root: INFO
 
-intelcomp:
-  frontBaseUrl: http://localhost:4200
-  loginRedirect: ${intelcomp.frontBaseUrl}
-  logoutRedirect: ${intelcomp.frontBaseUrl}
-  admins:
-    - test@test.com
+## Registry Properties ##
+hibernate:
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+    show_sql: false
+    format_sql: false
+    hbm2ddl.auto: update
 
-job-service:
-  authorization:
-    url:
-    grant-type:
-    client-id:
-    client-secret:
+## Elastic Properties ##
+elastic:
+    index.max_result_window: 10000
+    aggregation:
+        topHitsSize: 100
+        bucketSize: 100
