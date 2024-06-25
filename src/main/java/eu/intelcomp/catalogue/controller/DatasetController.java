@@ -1,6 +1,5 @@
 package eu.intelcomp.catalogue.controller;
 
-import eu.intelcomp.xsd2java.DatasetType;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.SearchService;
 import gr.athenarc.catalogue.service.GenericItemService;
@@ -27,8 +26,7 @@ public class DatasetController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> get(@PathVariable("id") String id) {
-        DatasetType dataset = genericItemService.get("dataset_type", id);
-        return ResponseEntity.ok(dataset);
+        return ResponseEntity.ok(genericItemService.get("dataset_type", id));
     }
 
     // TODO: helper method, remove when job filter is implemented correctly from @CITE
